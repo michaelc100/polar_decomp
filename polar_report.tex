@@ -172,7 +172,7 @@ Sherman-Morrison-Woodbury matrix identity \cite{high:ASNA2}:
 This of course assumes $C$ is nonsingular, which is true for $\Sigma^2$ when $A$
 is full rank. Applying (\ref{eqn:inverse}), we have
 \begin{align*}
-  & (t^2I + Q\Sigma^2Q^*)^{-1} \\
+  &\quad (t^2I + Q\Sigma^2Q^*)^{-1} \\
   & = \frac{1}{t^2}I - \frac{1}{t^2}Q(\Sigma^{-2} + \frac{1}{t^2}Q^*Q)^{-1}Q^*\frac{1}{t^2} \\
   & = \frac{1}{t^2}I - \frac{1}{t^2}Q(\diag(\frac{1}{\sigma_i^2}
     + \frac{1}{t^2}))^{-1}Q^*\frac{1}{t^2} \\
@@ -212,7 +212,7 @@ Promoting $X$ and $E$ to be members of a sequence, we obtain:
 Writing $E_k = (X_k^{-*} - X_k)/2$, and substituting for
 $E_k$ in (\ref{eqn:newtonderiv}), we obtain:
 \begin{align*}
-  &\frac{1}{2}X_k^*(X_k^{-*} - X_k) + \frac{1}{2}(X_k^{-1} - X_k^*)X_k \\
+  &\quad\frac{1}{2}X_k^*(X_k^{-*} - X_k) + \frac{1}{2}(X_k^{-1} - X_k^*)X_k \\
   &= \frac{1}{2}I - \frac{1}{2} X_k^*X_k + \frac{1}{2}I -  \frac{1}{2} X_k^*X_k  \\
   &= I - X_k^*X_k\text{.}
 \end{align*}
@@ -323,14 +323,13 @@ and so the Newton-Schulz iteration reduces to the $p=2$ case.
 Considering the quantity $(X_k - U)(X_k+2U)^*(X_k-U)$, we diagonalize it using
 the SVD as usual. We can then write
 \begin{align*}
-  & (PD_kQ^* - PQ^*)(QD_kP^* + 2QP^*)(PD_kQ^* - PQ^*)\\
+  &\quad(PD_kQ^* - PQ^*)(QD_kP^* + 2QP^*)(PD_kQ^* - PQ^*)\\
   & = (PD_k^2P^* + 2PD_kP^* - PD_kP^* - 2I)(PD_kQ^* - PQ^*)\\
   & = PD_k^3Q^* - 3PD_kQ^* + 2PQ^*\text{.}
 \end{align*}
 We have that $X_kX_k^*X_k = PD_k^3Q^*$ and so
 \begin{math}
-  \frac{1}{2}(X_k - U)(X_k+2U)^*(X_k-U)
-  = -\frac{1}{2}(X_k(3I-X_k^*X_k) - 2U) = -(X_{k+1}-U)
+  \frac{1}{2}(X_k - U)(X_k+2U)^*(X_k-U) = -\frac{1}{2}(X_k(3I-X_k^*X_k) - 2U) = -(X_{k+1}-U)
 \end{math}
 so that finally we have the relation:
 \begin{equation}
