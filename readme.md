@@ -1,4 +1,4 @@
-#Polar Decomposition
+# Polar Decomposition
 
 We provide an algorithm for computing the polar decomposition $A=UH$.
 We initially iterate using the Newton method and switch to the matrix multiplication rich
