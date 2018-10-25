@@ -4,7 +4,7 @@ function [U, H, its] = poldec(A)
 %   of the square, nonsingular matrix A. ITS is the number of 
 %   iterations for convergence.
 
-plot_display = false; %Set to true to plot relative error vs iterations
+plot_display = true; %Set to true to plot relative error vs iterations
 
 if plot_display
     errors = [1];
@@ -72,6 +72,7 @@ if plot_display
     leg = legend('$\delta_k$')
     set(leg, 'Interpreter', 'Latex')
     set(leg, 'FontSize', 12)
+    set(leg, 'Location', 'best')
 end
 
 U = X;
