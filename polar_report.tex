@@ -162,10 +162,10 @@ We verify the formula
 We first note that we can write $U=PQ^*$ when considering the SVD of $A$. We
 can also diagonalize $A^*A = Q\Sigma^2 Q^*$, and so
 \begin{equation}
-  U = \frac{2}{\pi}P\Sigma Q^*\int_0^{\infty}(t^2I + Q\Sigma^2 Q^*)dt\text{.}
+  U = \frac{2}{\pi}P\Sigma Q^*\int_0^{\infty}(t^2I + Q\Sigma^2 Q^*)^{-1}dt\text{.}
 \end{equation}
 The integrand can be manipulated in to an easily integrable expression using the
-Sherman-Morrison-Woodbury matrix identity \cite{high:ASNA2}:
+Sherman-Morrison-Woodbury matrix identity \cite[p.~258]{high:ASNA2}:
 \begin{equation}\label{eqn:inverse}
   (A+UCV)^{-1} = A^{-1} - A^{-1}U(C^{-1} + VA^{-1}U)VA^{-1}\text{.}
 \end{equation}
@@ -241,7 +241,7 @@ Assuming it to be true that $X_k = PD_kQ^*$, we consider:
 which is of course the Newton Iteration. The $D_k$ iteration is the Newton
 Iteration for $\mathrm{sign}(\Sigma) = I$, which we know to be true as $\Sigma$
 is diagonal with positive entries. These Newton iterates $D_k$ thus converge
-quadratically to $I$\cite{Higham:2008:FM}.
+quadratically to $I$\cite[p.~113]{Higham:2008:FM}.
 
 Moreover, we can consider:
 \begin{align*}
@@ -312,7 +312,7 @@ This result can be shown more generally for the iterative map:
   y_{k+1} = \frac{1}{p}[(1+p)y_k - y_k^{p+1}] = f(y_k)
   \text{, } y_0 = a^{1/p}\text{.}  
 \end{equation}
-It can be shown \cite{Higham:2008:FM} that $y_k \to 1$ if $y_0 < (p+1)^{1/p}$,
+It can be shown \cite[p.~182]{Higham:2008:FM} that $y_k \to 1$ if $y_0 < (p+1)^{1/p}$,
 and so the Newton-Schulz iteration reduces to the $p=2$ case.
 
 Considering the quantity $(X_k - U)(X_k+2U)^*(X_k-U)$, we diagonalize it using
@@ -332,7 +332,8 @@ so that finally we have the relation:
   \norm{X_k+2U}_2\norm{X_k - U}_2^2\text{.}
 \end{equation}
 We can also consider the convergence of the Newton-Schulz iteration in
-terms of the residual $R_k = I-X_k^*X_k$. This satisfies \cite{Higham:2008:FM}
+terms of the residual $R_k = I-X_k^*X_k$. This satisfies
+\cite[p.~218]{Higham:2008:FM}
 \begin{equation*}
   R_{k+1} = \frac{3}{4}R_k^2 + \frac{1}{4}R_k^3\text{.}
 \end{equation*}
@@ -364,13 +365,15 @@ be twice as fast as inversion in order for the Newton-Schulz iteration to be
 quicker, or $1.5$ times as fast if we take advantage of the symmetry in the
 matrix product.
 
-\section{Experiments and Results}
+\section{Numerical Experiments and Results}
 In order to practically compute the polar decomposition, we employ an algorithm
 wherby we start with the Newton iteration and switch to the Newton-Schulz
 iteration when it's convergence is guaranteed. The motivation for this is that
-the Newton-Schulz iteration is multiplication rich, which is very fast on high
-performance computers. We switch to the Newton-Schulz iteration when
+the Newton-Schulz iteration is matrix multiplication rich,
+which is very fast on high performance computers.
+We switch to the Newton-Schulz iteration when
 $\normo{I - X_k^*X_k} \leq \theta$, for some $\theta < 1$.
+We implement the algorithm in MATLAB.
 
 The termination criteria we employ are:
 \begin{equation*}
