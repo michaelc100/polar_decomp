@@ -11,7 +11,7 @@
 \sisetup{output-exponent-marker=\ensuremath{\mathrm{e}}}
 
 
-\title{Notes on the Polar Decomposition}
+\title{The Polar Decomposition}
 \author{Michael Connolly%
         \thanks{%
                 School of Mathematics,
@@ -155,7 +155,7 @@ If $A^*A = AA^*$, then $H^2 = UH^2U^*$. Taking the principal square root of
 both sides gives $H = UHU^*$ and post-multiplying by $U$ gives the required
 condition.
 
-We next verify the formula
+We verify the formula
 \begin{equation} \label{eqn:U-integral}
   U = \frac{2}{\pi}A\int_{0}^{\infty}(t^2I + A^*A)^{-1}dt\text{.}
 \end{equation}
@@ -275,9 +275,9 @@ $D_0 = \Sigma$. For $k = 1$, we have that $D_1 = \Sigma(3I - \Sigma^2)/2$. The
 required result follows easily:
 \begin{align*}
   X_{1} & = \frac{1}{2}P\Sigma(3I-\Sigma^2)Q^* \\
-          & = \frac{3}{2}P\Sigma Q^* - \frac{1}{2}P\Sigma^3Q^* \\
-          & = \frac{3}{2}X_0 - \frac{1}{2}X_0X_0^*X_0 \\
-  & = \frac{1}{2}X_0(3I - X_0^*X_0)\text{, as required.}
+       & = \frac{3}{2}P\Sigma Q^* - \frac{1}{2}P\Sigma^3Q^* \\
+       & = \frac{3}{2}X_0 - \frac{1}{2}X_0X_0^*X_0 \\
+       & = \frac{1}{2}X_0(3I - X_0^*X_0)\text{, as required.}
 \end{align*}
 Note in the penultimate step we made use of the fact that
 $X_0X_0^*X_0 = P\Sigma^3Q^*$, which is trivial to show. We then assume that
@@ -301,14 +301,9 @@ For $x_n \in (1\text{, } \sqrt{3})$, we have $f(1) = 1$,
 $f(\sqrt{3}) = 0$ and $f^{\prime}(x) < 0$ for $x > 1$.
 As a result $f$ maps $(1, \sqrt{3}) \to (0, 1)$ and after the first iteration
 we can apply the previous argument.
-$\lvert f^{\prime}(x) \rvert$ informs us about the
-stability of a fixed point. A fixed point $x^*$ is stable, i.e. an attractor,
-if $\lvert f^{\prime}(x^*) \rvert < 1$, and unstable, i.e. a repellor, if
-$\lvert f^{\prime}(x^*) \rvert > 1$. For this map we have that $x^* = \pm 1$
-are attractors and $x^* = 0$ is a repellor. The region in which we are
-interested is that for which we reach the fixed point $1$. It is easy to see
-that this is $0 < x_0 < \sqrt{3}$. For $x_0 = 0\text{, } \sqrt{3}$ we reach
-$x^* = 0$. For $x_0 > \sqrt{3}\text{, } x_1 < 0$ and so we reach $x^* = -1$.
+The iteration fails to converge for $x_0 = \sqrt{3}$ as $f(\sqrt{3}) = 0$ and
+$0$ is a fixed point of the iteration.
+
 We thus require the diagonal entries of $\Sigma$ to all be non-zero and less
 than $\sqrt{3}$ for the Newton-Schulz iteration to converge. We could
 alternatively phrase this as $A$ being non-singular and $\norm{A}_2 < \sqrt{3}$.
@@ -404,7 +399,7 @@ $H^{\prime} = \hat{U}^*A$. This guarantees that $\hat{H}$ is Hermitian.
     \State $X_{k+1} \gets (X_k + X_k^{-*})/2$
     \EndIf
     \State $\delta_{k+1} \gets \normo{X_{k+1} - X_k}/\normo{X_{k+1}}$
-    \If{$\delta_{k+1} \leq \eta \text{ or } \delta_{k+1} > \delta_k/2$}
+    \If{$\delta_{k+1} < \eta \text{ or } \delta_{k+1} > \delta_k/2$}
     \State break
     \EndIf
     \EndFor
@@ -439,6 +434,8 @@ computed the polar decomposition of matrices of various sizes, with entries
 sampled from $\mathcal{N}(0, 1)$. For a sample matrix with $n=10$, the algorithm
 switches to the Newton-Schulz iteration after $3$ iterations and terminates
 after $9$ iterations.
+The algorithm also scales well, requiring just $12$ iterations for a sample
+matrix with $n=1000$ and $\normo{A-\hat{U}\hat{H}}/\normo{A} = \num{1.4e-14}$.
 
 \textit{Identity matrix:} For $I_8$ the iteration terminates immediately as
 expected, given that the Newton or Newton-Schulz iteration applied to the
@@ -450,8 +447,15 @@ $\kappa_2 = 1.4951\times 10^7$ the algorithm requires $29$ iterations for
 convergence and only switches to the Newton-Schulz iteration after the $24$th
 iteration. Upon terminating, we have $\delta_{k+1} = \num{1.1e-16}$. The
 computed answer is accurate. We also have $\hat{U} = I$ and so $\hat{H} = A$.
-This is expected given that $A$ is symmetric. As such the SVD is equivalent to
-a spectral decomposition and $U = PQ^* = I$.
+This is expected given that $A$ is symmetric positive definite.
+As such the SVD is equivalent to a spectral decomposition and $U = PQ^* = I$.
+Figure \ref{fig:hilb} shows the evolution of $\delta_k$ for the Hilbert matrix. 
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.8]{hilb}
+  \caption{$\delta_k$ versus $k$ for the Hilbert matrix.}
+  \label{fig:hilb}    
+\end{figure}
 
 \textit{Magic Square:}
 The performance on the rank deficient $6\times 6$ magic
@@ -466,12 +470,13 @@ Newton iteration.
 \textit{Hadamard matrix:} For the perfectly conditioned $8\times 8$ Hadamard
 matrix, we terminate after the $8$th iteration, switching to the Newton-Schulz
 iteration at the $3$rd. We note that $\hat{H} = \alpha I$, with
-$\alpha = 2.248$. This is a verification of $\lambda(H) = \sigma(A)$, as can be
-seen by evaluating \texttt{svd(hadamard(8))}. We also expect that
-$H = \alpha I$ given that the columns of the Hadamard matrix are mutually
-orthogonal. To thus form $U$ we must simply scale $A$ by an appropriate amount
-$1/\alpha$ so that the columns are orthonormal. Figure \ref{fig:hadamard} shows
-the evolution of $\delta_k$ for the Hadamard matrix.
+$\alpha = 2.8284 = \sqrt{8}$.  This is a verification of
+$\lambda(H) = \sigma(A)$, as can be seen by evaluating
+\texttt{svd(hadamard(8))}. We also expect that $H = \alpha I$ given that the
+columns of the Hadamard matrix are mutually orthogonal. To thus form $U$ we must
+simply scale $A$ by an appropriate amount $1/\alpha$ so that the columns are
+orthonormal. Figure \ref{fig:hadamard} shows the evolution of $\delta_k$ for the
+Hadamard matrix.
 \begin{figure}
   \centering
   \includegraphics[scale=0.8]{hadamard}
