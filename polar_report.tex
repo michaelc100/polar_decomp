@@ -104,7 +104,7 @@
 We begin by defining the polar decomposition and covering some basic properties.
 Let $A \in \C^{\mbyn}$ with $m \ge n$. There exists $U \in \C^{\mbyn}$ with
 orthonormal columns and a unique Hermitian positive semidefinite
-$H \in \C^{\nbyn}$ such that $A=UH$. $H$ is given by $(A^{*}A)^{\frac{1}{2}}$.
+$H \in \C^{\nbyn}$ such that $A=UH$.
 All $U$ are given by
 \begin{equation}
   U=P
@@ -114,9 +114,12 @@ All $U$ are given by
   \end{bmatrix}
   Q^*\text{,}
 \end{equation}
-where $A = P \begin{bmatrix} \Sigma_r & 0 \\ 0 & 0_{m-r\text{, } n-r}\end{bmatrix} Q^*$
-is an SVD, $r=\mathrm{rank}(A)$ and $W \in \C^{(m-r)\times (n-r)}$ is arbitrary subject
-to having orthonormal columns.
+where
+\begin{equation}\label{eqn:svd}
+  A = P \begin{bmatrix} \Sigma_r & 0 \\ 0 & 0_{m-r\text{, } n-r}\end{bmatrix} Q^*
+\end{equation}
+is an SVD, $r=\mathrm{rank}(A)$ and $W \in \C^{(m-r)\times (n-r)}$
+is arbitrary subject to having orthonormal columns.
 
 We note some properties of the polar decomposition.
 From this point forward we consider only square matrices.
@@ -130,14 +133,8 @@ have polar decomposition $A=UH$. Then:
 \end{enumerate}
 
 We present proofs of the second and fourth properties.
-To see $\lambda(H) = \sigma(A)$, we first consider the SVD of $A$:
-\begin{equation}
-  A = P
-  \begin{bmatrix}
-    \Sigma_r & 0 \\
-    0 & 0_{n-r\text{, }n-r} \\	
-  \end{bmatrix} Q^*\text{,}
-\end{equation}
+To see $\lambda(H) = \sigma(A)$, we first consider the SVD
+(\ref{eqn:svd}) of $A$,
 with $P\text{, } Q \in \C^{\nbyn}$ and both unitary. $\Sigma_r$ is then a
 diagonal matrix containing the singular values of $A$. We now evaluate
 $A^*A = (P\Sigma Q^*)^*P\Sigma Q^* = Q\Sigma^* P^* P\Sigma Q^* = Q \Sigma^*
@@ -494,6 +491,10 @@ Given $R = UH$, we then have $A = (UH)^*UH = H^*H = H^2$.
 As seen in the case of the polar decomposition the algorithm is accurate for the
 ill conditioned Hilbert matrix.
 We have $\normo{A - \hat{H}^2}/\normo{A} = \num{5.7e-17}$.
+
+\section*{Appendix: MATLAB Code}
+\verbatiminput{poldec.m}
+\verbatiminput{sqrt_spd.m}
 
 \bibliographystyle{unsrt}
 \bibliography{polar}
