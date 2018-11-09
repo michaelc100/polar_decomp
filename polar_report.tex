@@ -161,27 +161,20 @@ can also diagonalize $A^*A = Q\Sigma^2 Q^*$, and so
 \begin{equation}
   U = \frac{2}{\pi}P\Sigma Q^*\int_0^{\infty}(t^2I + Q\Sigma^2 Q^*)^{-1}dt\text{.}
 \end{equation}
-The integrand can be manipulated in to an easily integrable expression using the
-Sherman-Morrison-Woodbury matrix identity \cite[p.~258]{high:ASNA2}:
-\begin{equation}\label{eqn:inverse}
-  (A+UCV)^{-1} = A^{-1} - A^{-1}U(C^{-1} + VA^{-1}U)VA^{-1}\text{.}
-\end{equation}
-This of course assumes $C$ is nonsingular, which is true for $\Sigma^2$ when $A$
-is full rank. Applying (\ref{eqn:inverse}), we have
+By writing $I = QQ^*$, we have
 \begin{align*}
   &\quad (t^2I + Q\Sigma^2Q^*)^{-1} \\
-  & = \frac{1}{t^2}I - \frac{1}{t^2}Q(\Sigma^{-2} + \frac{1}{t^2}Q^*Q)^{-1}Q^*\frac{1}{t^2} \\
-  & = \frac{1}{t^2}I - \frac{1}{t^2}Q(\diag(\frac{1}{\sigma_i^2}
-    + \frac{1}{t^2}))^{-1}Q^*\frac{1}{t^2} \\
-  & = \frac{1}{t^2}I - \frac{1}{t^2}Q(\diag(\frac{\sigma_i^2}{\sigma_i^2 + t^2}))Q^* \\
-  & = Q(\frac{1}{t^2}I - \diag(\frac{\sigma_i^2}{t^2(\sigma_i^2 + t^2)}))Q^*
-    \text{, where we wrote } I = QQ^*
-  \text{to factor out } Q\text{ and } Q^*\text{,}\\
+  & = (Q(t^2I + \Sigma^2)Q^*)^{-1} \\
+  & = Q(t^2I + \Sigma^2)^{-1}Q^* \\
   & = Q\diag(\frac{1}{\sigma_i^2 + t^2})Q^*\text{.}
 \end{align*}
-
 We can now integrate the diagonal matrix, moving the unitary matrices with no
-$t$ dependence outside the integral. We have
+$t$ dependence outside the integral.
+The result follows from
+\begin{equation}
+  \int\frac{1}{a^2+t^2}dt = \frac{tan^{-1}(\frac{t}{a})}{a}\text{,}
+\end{equation}
+and so we have
 \begin{equation}
   \int_0^{\infty}\frac{1}{\sigma_i^2+t^2}dt = \frac{\pi}{2\sigma_i}\text{,}
 \end{equation}
@@ -214,12 +207,12 @@ $E_k$ in (\ref{eqn:newtonderiv}), we obtain:
   &= I - X_k^*X_k\text{.}
 \end{align*}
 $E_k$ of this form thus satisfies (\ref{eqn:newtonderiv}) and so we arrive
-at the Newton Iteration for the unitary polar factor $U$:
+at the Newton iteration for the unitary polar factor $U$:
 \begin{equation}\label{eqn:newton}
   X_{k+1} = \frac{1}{2}(X_k + X_{k}^{-*})\text{, } X_0 = A\text{.}
 \end{equation}
 
-We analyse the convergence of the Newton Iteration by considering the SVD of $A$.
+We analyse the convergence of the Newton iteration by considering the SVD of $A$.
 As previously noted, we have that $A=P\Sigma Q^*$ and $U=PQ^*$.
 We postulate that $X_k = PD_kQ^*$, with $D_{k+1} = (D_k + D_k^{-1})/2$, $D_0 = \Sigma$.
 The proof is by induction.
@@ -229,7 +222,7 @@ The equivalence between the two is immediate:
 \begin{equation*}
   PD_1Q^* = \frac{1}{2}(P\Sigma Q^* + P\Sigma^{-1} Q^*) = \frac{1}{2}(A + A^{-*}) = X_1\text{.}
 \end{equation*}
-Assuming it to be true that $X_k = PD_kQ^*$, we consider:
+Assuming it to be true that $X_k = PD_kQ^*$, we have
 \begin{align*}
   X_{k+1} & = \frac{1}{2}P(D_k + D_k^{-1})Q^* \\
           & = \frac{1}{2}PD_kQ^* + \frac{1}{2}PD_k^{-1}Q^* \\
@@ -274,8 +267,9 @@ required result follows easily:
   X_{1} & = \frac{1}{2}P\Sigma(3I-\Sigma^2)Q^* \\
        & = \frac{3}{2}P\Sigma Q^* - \frac{1}{2}P\Sigma^3Q^* \\
        & = \frac{3}{2}X_0 - \frac{1}{2}X_0X_0^*X_0 \\
-       & = \frac{1}{2}X_0(3I - X_0^*X_0)\text{, as required.}
+       & = \frac{1}{2}X_0(3I - X_0^*X_0)
 \end{align*}
+as required.
 Note in the penultimate step we made use of the fact that
 $X_0X_0^*X_0 = P\Sigma^3Q^*$, which is trivial to show. We then assume that
 $X_k = PD_kQ^*$. Writing
@@ -291,9 +285,9 @@ in which the mapping $x_{n+1} = f(x_n)$ is stable and has a fixed point of $1$.
 The fixed points of an iterative map are those for which $x = f(x)$, given here
 by $x = 0\text{, }\pm 1$.
 Consider first $x_n \in (0, 1)$.
-We have $f(0) = 0\text{, } f(1) = 1$ and $f^{\prime}(x) < 0$ for $x \in [0, 1)$.
-The $x_n$ thus form a sequence tending to a limit in $[0, 1]$,
-which must be the fixed point $1$.
+We have $f(0) = 0\text{, } f(1) = 1$ and $f^{\prime}(x) > 0$ for $x \in [0, 1)$.
+As the $x_n$ are always increasing in this region and bounded above by $1$, they
+form a sequence which must converge to the fixed point $1$.
 For $x_n \in (1\text{, } \sqrt{3})$, we have $f(1) = 1$,
 $f(\sqrt{3}) = 0$ and $f^{\prime}(x) < 0$ for $x > 1$.
 As a result $f$ maps $(1, \sqrt{3}) \to (0, 1)$ and after the first iteration
@@ -303,8 +297,8 @@ $0$ is a fixed point of the iteration.
 
 We thus require the diagonal entries of $\Sigma$ to all be non-zero and less
 than $\sqrt{3}$ for the Newton-Schulz iteration to converge. We could
-alternatively phrase this as $A$ being non-singular and $\norm{A}_2 < \sqrt{3}$.
-This result can be shown more generally for the iterative map:
+alternatively phrase this as $A$ being nonsingular and $\norm{A}_2 < \sqrt{3}$.
+This result can be shown more generally for the iterative map
 \begin{equation}
   y_{k+1} = \frac{1}{p}[(1+p)y_k - y_k^{p+1}] = f(y_k)
   \text{, } y_0 = a^{1/p}\text{.}  
@@ -336,15 +330,18 @@ terms of the residual $R_k = I-X_k^*X_k$. This satisfies
 \end{equation*}
 Thus for $\norm{R_k} < 1$, we have
 $\norm{R_{k+1}} < 3\norm{R_k}^2/4 + \norm{R_k}^2/4 = \norm{R_k^2} < \norm{R_k}$,
-and so the $\|R_k\|$ form a sequence converging to zero. This later provides us
-with an important test on the convergence of the Newton-Schulz method.
+and so the $\|R_k\|$ form a sequence converging to zero.
+Convergence of the residuals to zero thus implies that the $X_k$ are converging
+to a unitary matrix as we require.
+This later provides us with an important test on the convergence of the
+Newton-Schulz method.
 
 \subsection{Computational Cost}
 We now consider the operation count of the Newton and Netwon-Schulz iterations,
 where $A \in \C^{\nbyn}$. The operation count for the Newton iteration is
-$2n^3 + \mathcal{O}(n^2)$, assuming the matrix inverse is computed by Gaussian
+$2n^3 + \mathcal{O}(n^2)$ flops, assuming the matrix inverse is computed by Gaussian
 elimination with partial pivoting (GEPP), making each iteration
-$\mathcal{O}(n^3)$. Writing the Newton-Schulz iteration as
+$\mathcal{O}(n^3)$ flops. Writing the Newton-Schulz iteration as
 $X_{k+1} = (3/2)X_k - (1/2)X_kX_k^*X_k$, we see that the cost is $3n^2$ (two
 matrices multiplied by scalars plus a matrix subtraction, each of cost $n^2$),
 plus the cost of forming the matrix product $X_kX_k^*X_k$. We can take
@@ -355,7 +352,7 @@ matrix costing $2n-1$ operations to compute, the cost of this is then
 $(2n-1)\Sigma_{i=1}^n i = 2n(n-1)(n+1)/2 = n^3 - n$ operations. We have another
 $2n^3$ operations from the subsequent matrix product, meaning the total cost of
 the Newton-Schulz iteration is $3n^3 + \mathcal{O}(n^2)$, again
-$\mathcal{O}(n^3)$. Ignoring total operation counts, we see that we perform one
+$\mathcal{O}(n^3)$ flops. Ignoring total operation counts, we see that we perform one
 matrix inversion in the Newton iteration, compared to two matrix multiplications
 in the Newton-Schulz iteration. This means we require matrix multiplication to
 be twice as fast as inversion in order for the Newton-Schulz iteration to be
@@ -381,20 +378,27 @@ desired relative error to which we assign a value of $n^{1/2}u$, with $u$ the
 unit roundoff. Another point to note is that upon computing $\hat{U}$, we
 compute $\hat{H} = (H^{\prime} + (H^*)^{\prime})/2$ with
 $H^{\prime} = \hat{U}^*A$. This guarantees that $\hat{H}$ is Hermitian.
+This computed $\hat{H}$ is the nearest hermitian matrix to $A$ in the Frobenius norm.
 
 \begin{algorithm}
-  \caption{Polar Decomposition}\label{polar_decomp}
+  \caption{Polar Decomposition: Given square $A$ we compute the $A=UH$ using a
+    combination of the Newton and Newton-Schulz iterations. We have tolerance
+    $\eta$ for determining convergence and $\theta$ for switching to the
+    Newton-Schulz iteration.
+  }
+  \label{polar_decomp}
   \begin{algorithmic}[1]
     \State $X_0 \gets A$; switch $\gets$ false
     \For{$k = 0:\infty$}
+    \State $Y_k \gets X_k^*X_k$
     \If{not switch}
-    \If{$\normo{I-X_k^*X_k} \leq \theta$}
+    \If{$\normo{I-Y_k} \leq \theta$}
     \State switch $\gets$ true
     \EndIf
     \EndIf
 
     \If{switch}
-    \State $X_{k+1} \gets X_k(3I - X_k^*X_k)/2$
+    \State $X_{k+1} \gets X_k(3I - Y_k)/2$
     \Else
     \State $X_{k+1} \gets (X_k + X_k^{-*})/2$
     \EndIf
@@ -431,7 +435,8 @@ not have a significant effect on the algorithm.
 
 $\mathcal{N}(0, 1)$\textit{ matrices:} In order to test the algorithm, we
 computed the polar decomposition of matrices of various sizes, with entries
-sampled from $\mathcal{N}(0, 1)$. For a sample matrix with $n=10$, the algorithm
+sampled from $\mathcal{N}(0, 1)$, the normal distribution with zero mean and
+unit variance. For a sample matrix with $n=10$, the algorithm
 switches to the Newton-Schulz iteration after $3$ iterations and terminates
 after $9$ iterations.
 The algorithm also scales well, requiring just $12$ iterations for a sample
